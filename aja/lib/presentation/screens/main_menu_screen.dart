@@ -5,6 +5,8 @@ import 'package:aja/presentation/games/gift_grab_game.dart';import 'package:aja/
 import 'package:aja/presentation/widgets/screen_background_widget.dart';
 import 'package:flutter/material.dart';
 
+import 'leaderboard_screen.dart';
+
 class MainMenuScreen extends StatelessWidget {
   final GiftGrabGame gameRef;
   const MainMenuScreen({
@@ -59,8 +61,10 @@ class MainMenuScreen extends StatelessWidget {
               height: Globals.isTablet ? 100 : 50,
               child: ElevatedButton(
                 onPressed: () {
-                  gameRef.addMenu(menu: Screens.leaderboard);
-                  gameRef.removeMenu(menu: Screens.main);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LeaderboardScreen(gameRef: gameRef)),
+                  );
                 },
                 child: Text(
                   'Leaderboard',
@@ -70,6 +74,7 @@ class MainMenuScreen extends StatelessWidget {
                 ),
               ),
             ),
+
             // const SizedBox(
             //   height: 20,
             // ),

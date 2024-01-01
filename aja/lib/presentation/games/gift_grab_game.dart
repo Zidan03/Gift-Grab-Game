@@ -283,6 +283,4 @@ void addIceComponents(int count) {
     add(IceComponent(startPosition: Vector2(200, 200)));
   }
 }
-
-
 }

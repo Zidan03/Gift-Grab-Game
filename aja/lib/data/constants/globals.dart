@@ -8,7 +8,7 @@ class Globals {
 
   /// Images
   static const String santaIdle = 'run.png';
-  static const String santaFrozen = 'freeze_people.png';
+  static const String santaFrozen = 'santa-frozen.png';
   static const String santaSlideLeftSprite = 'char-slide-left.png';
   static const String santaSlideRightSprite = 'char-slide-right.png';
   static const String backgroundSprite = 'background-sprite.jpg';

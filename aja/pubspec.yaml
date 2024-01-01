@@ -44,6 +44,11 @@ dependencies:
 
   nakama: ^0.1.6  
   flutter_riverpod: ^2.3.6
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.7.3
+  cloud_firestore:
+  get: ^4.6.6
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   flutter_test:

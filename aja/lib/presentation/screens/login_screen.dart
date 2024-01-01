@@ -1,107 +1,134 @@
-import 'package:aja/data/constants/globals.dart';
+import 'package:flutter/material.dart';
 import 'package:aja/data/constants/screens.dart';
 import 'package:aja/presentation/games/gift_grab_game.dart';
 import 'package:aja/presentation/widgets/screen_background_widget.dart';
-import 'package:aja/util/upper_case_text_formatter.dart';
-import 'package:device_info/device_info.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../data/auth/auth_controllers.dart';
 
-class LoginScreen extends ConsumerWidget {
+class LoginScreen extends StatefulWidget {
   final GiftGrabGame gameRef;
-
-  final TextEditingController _controller = TextEditingController();
+  final AuthController authController;
 
   LoginScreen({
     Key? key,
     required this.gameRef,
+    required this.authController,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // NakamaProvider nakamaProvider = ref.watch(Providers.nakamaProvider);
-    checkDeviceType(context);
-    final theme = Theme.of(context);
+  _LoginScreenState createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String _errorMessage = '';
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return ScreenBackgroundWidget(
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50),
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Text(
                 'Login',
-                style: theme.textTheme.displayLarge!.copyWith(
-                  fontSize: Globals.isTablet
-                      ? theme.textTheme.displayLarge!.fontSize! * 2
-                      : theme.textTheme.displayLarge!.fontSize,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(16),
               child: TextFormField(
-                controller: _controller,
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
                 textAlign: TextAlign.center,
-                maxLength: 4,
-                inputFormatters: [
-                  UpperCaseTextFormatter(),
-                ],
-                style: theme.textTheme.displayLarge!.copyWith(
-                  fontSize: Globals.isTablet
-                      ? theme.textTheme.displayLarge!.fontSize! * 2
-                      : theme.textTheme.displayLarge!.fontSize,
-                ),
                 decoration: InputDecoration(
+                  hintText: 'Email',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
                   filled: true,
-                  fillColor: Colors.black.withOpacity(0.1),
+                  fillColor: Colors.black.withOpacity(0.3),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: TextFormField(
+                controller: _passwordController,
+                obscureText: true,
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  filled: true,
+                  fillColor: Colors.black.withOpacity(0.3),
                 ),
               ),
             ),
             SizedBox(
-              width: Globals.isTablet ? 400 : 200,
-              height: Globals.isTablet ? 100 : 50,
+              width: 360,
+              height: 50,
               child: ElevatedButton(
                 onPressed: () async {
-                  // String username = _controller.text;
+                  String email = _emailController.text;
+                  String password = _passwordController.text;
+                  if (email.trim().isEmpty || password.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content:
+                            Text('Please fill in both email and password.'),
+                      ),
+                    );
+                    return;
+                  }
 
-                  // await nakamaProvider.createEmail(
-                  //   email: '$username@gmail.com',
-                  //   password: 'password',
-                  //   username: username,
-                  // );
-
-                  gameRef.addMenu(menu: Screens.main);
-                  gameRef.removeMenu(menu: Screens.login);
+                  try {
+                    await widget.authController.loginUser(email, password);
+                    if (widget.authController.currentUser != null) {
+                      widget.gameRef.addMenu(menu: Screens.main);
+                      widget.gameRef.removeMenu(menu: Screens.login);
+                    } else {
+                      setState(() {
+                        _errorMessage = 'Authentication failed.';
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(_errorMessage),
+                        ),
+                      );
+                    }
+                  } catch (error) {
+                    setState(() {
+                      _errorMessage = 'An error occurred: $error';
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(_errorMessage),
+                      ),
+                    );
+                  }
                 },
-                child: Text(
-                  'Submit',
-                  style: TextStyle(
-                    fontSize: Globals.isTablet ? 50 : 25,
-                  ),
-                ),
+                child: Text('Submit'),
               ),
             ),
           ],
         ),
       ),
     );
-  }
-
-  // Sets the global isTablet variable based on the device type/dimensions.
-  Future<void> checkDeviceType(BuildContext context) async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    if (Theme.of(context).platform == TargetPlatform.iOS) {
-      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      Globals.isTablet = iosInfo.model.contains('iPad');
-    } else {
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      Globals.isTablet = (androidInfo.isPhysicalDevice &&
-          MediaQuery.of(context).size.width >= 600.0);
-    }
   }
 }
