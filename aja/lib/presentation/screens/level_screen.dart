@@ -1,15 +1,15 @@
-import 'package:aja/data/constants/globals.dart';
 import 'package:aja/presentation/widgets/screen_background_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:aja/presentation/games/gift_grab_game.dart'; // Sesuaikan dengan path yang benar
+import 'package:aja/presentation/games/gift_grab_game.dart';
 import 'package:aja/data/constants/screens.dart';
 
 class LevelScreen extends StatelessWidget {
   final GiftGrabGame gameRef;
-  final int level; // Tambahkan level
+  final int level;
 
   const LevelScreen({Key? key, required this.gameRef, required this.level})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -22,10 +22,10 @@ class LevelScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 50),
               child: Text(
                 'Pilih Level',
-                style: theme.textTheme.displayLarge!.copyWith(
-                  fontSize: Globals.isTablet
-                      ? theme.textTheme.displayLarge!.fontSize! * 2
-                      : theme.textTheme.displayLarge!.fontSize,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 35,
+                  fontWeight: FontWeight.w900,
                 ),
               ),
             ),
@@ -33,47 +33,45 @@ class LevelScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 buildLevelButton(context, 1),
+                SizedBox(height: 16),
                 buildLevelButton(context, 2),
+                SizedBox(height: 16),
                 buildLevelButton(context, 3),
               ],
             ),
-              const SizedBox(
-                height: 20,
-              ),
+            const SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),
     );
-    //   appBar: AppBar(
-    //     title: const Text('Pilih Level'),
-    //   ),
-    //   body: Center(
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       children: [
-    //         buildLevelButton(context, 1),
-    //         buildLevelButton(context, 2),
-    //         buildLevelButton(context, 3),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 
   Widget buildLevelButton(BuildContext context, int level) {
     return SizedBox(
       width: 200,
-      height: 50,
+      height: 60,
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: Colors.blue,
+          onPrimary: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
         onPressed: () {
           gameRef.removeMenu(menu: Screens.main);
           gameRef.resumeEngine();
           Navigator.pop(context);
-          gameRef.setLevel(level); // Kirim level ke GiftGrabGame
+          gameRef.setLevel(level);
         },
         child: Text(
           'Level $level',
-          style: const TextStyle(fontSize: 25),
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

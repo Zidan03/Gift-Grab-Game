@@ -1,14 +1,12 @@
 class Globals {
   Globals._();
 
-  /// Audio
   static const String freezeSound = 'freeze-sound.wav';
   static const String itemGrabSound = 'item-grab-sound.wav';
   static const String flameSound = 'flame-sound.wav';
 
-  /// Images
   static const String santaIdle = 'run.png';
-  static const String santaFrozen = 'santa-frozen.png';
+  static const String santaFrozen = 'frozen-santa.png';
   static const String santaSlideLeftSprite = 'char-slide-left.png';
   static const String santaSlideRightSprite = 'char-slide-right.png';
   static const String backgroundSprite = 'background-sprite.jpg';
@@ -24,7 +22,6 @@ class Globals {
   static const int flameTimeLimit = 10;
   static const int cookieTimeLimit = 10;
 
-  // New constants for controlling difficulty
   static const double iceSpawnIntervalLevel1 = 1.0;
   static const double iceSpawnIntervalLevel2 = 0.8;
   static const double iceSpawnIntervalLevel3 = 0.6;

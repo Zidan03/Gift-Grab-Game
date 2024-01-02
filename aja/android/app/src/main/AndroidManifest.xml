@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
         android:label="aja"
-        android:name="${applicationName}"
+        android:name="Find Gift"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

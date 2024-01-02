@@ -24,59 +24,38 @@ class GiftGrabGameWidget extends StatelessWidget {
           game: GiftGrabGame(),
         ),
       ),
-    ); // Access the widget property of the FlameGame
+    );
   }
 }
 
 class GiftGrabGame extends FlameGame with DragCallbacks, HasCollisionDetection {
-  /// The Santa character who collects the gifts.
   final SantaComponent _santaComponent = SantaComponent(joystick: joystick);
-
-  /// Background of snow landscape.
   final BackgroundComponent _backgroundComponent = BackgroundComponent();
-
-  /// The first gift to collect.
   final GiftComponent _giftComponent = GiftComponent();
-
-  /// Flame powerup.
   final FlameComponent _flameComponent = FlameComponent(
     startPosition: Vector2(200, 200),
   );
 
-  /// Number of presents Santa has grabbed.
   int score = 0;
 
-  /// Total seconds for each game.
   static int _remainingTime = Globals.gameTimeLimit;
-
   int _flameRemainingTime = Globals.flameTimeLimit;
-
-  /// Timer for game countdown.
   late Timer gameTimer;
-
   late Timer flameTimer;
-
-  /// Text UI component for score.
   late TextComponent _scoreText;
-
-  /// Text UI component for timer.
   late TextComponent _timerText;
-
-  /// Text UI component for flame counter.
   late TextComponent flameTimerText;
 
-  /// Time when the flame appears.
   static int _flameTimeAppearance = _getRandomInt(
     min: 10,
     max: _remainingTime,
   );
 
-  /// Time when the flame appears.
   static int _cookieTimeAppearance = _getRandomInt(
     min: 10,
     max: _remainingTime,
   );
-  
+
   var gameRef;
 
   num? get currentLevel => null;
@@ -84,30 +63,19 @@ class GiftGrabGame extends FlameGame with DragCallbacks, HasCollisionDetection {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-
-
     pauseEngine();
-
-
-    // Configure countdown timer.
     gameTimer = Timer(
       1,
       repeat: true,
       onTick: () {
         if (_remainingTime == 0) {
-          // Pause the game.
           pauseEngine();
-          // Display game over menu.
           addMenu(menu: Screens.gameOver);
         } else if (_remainingTime == _flameTimeAppearance) {
-          // Display the flame powerup.
           add(_flameComponent);
         } else if (_remainingTime == _cookieTimeAppearance) {
-          // Display the cookie powerup.
           add(CookieComponent());
         }
-
-        // Decrement time by one second.
         _remainingTime -= 1;
       },
     );
@@ -125,7 +93,6 @@ class GiftGrabGame extends FlameGame with DragCallbacks, HasCollisionDetection {
       },
     );
 
-    // Preload audio files.
     await FlameAudio.audioCache.loadAll(
       [
         Globals.freezeSound,
@@ -134,26 +101,14 @@ class GiftGrabGame extends FlameGame with DragCallbacks, HasCollisionDetection {
       ],
     );
 
-    // Add background.
     add(_backgroundComponent);
-
-    // Add initial gift.
     add(_giftComponent);
-
-    // Add ice blocks.
     add(IceComponent(startPosition: Vector2(200, 200)));
     add(IceComponent(startPosition: Vector2(size.x - 200, size.y - 200)));
-
-    // Add santa.
     add(_santaComponent);
-
-    // Add joystick.
     add(joystick);
-
-    // Add ScreenHitBox for boundries for ice blocks.
     add(ScreenHitbox());
 
-    // Configure TextComponent
     _scoreText = TextComponent(
       text: 'Score: $score',
       position: Vector2(40, 50),
@@ -166,10 +121,7 @@ class GiftGrabGame extends FlameGame with DragCallbacks, HasCollisionDetection {
       ),
     );
 
-    // Add Score TextComponent.
     add(_scoreText);
-
-    // Configure TextComponent
     _timerText = TextComponent(
       text: 'Time: $score',
       position: Vector2(size.x - 40, 50),
@@ -182,10 +134,8 @@ class GiftGrabGame extends FlameGame with DragCallbacks, HasCollisionDetection {
       ),
     );
 
-    // Add Score TextComponent.
     add(_timerText);
 
-    // Configure TextComponent
     flameTimerText = TextComponent(
       text: 'Flame Time: $_flameRemainingTime',
       position: Vector2(size.x - 40, size.y - 100),
@@ -204,28 +154,19 @@ class GiftGrabGame extends FlameGame with DragCallbacks, HasCollisionDetection {
   @override
   void update(double dt) {
     super.update(dt);
-
     gameTimer.update(dt);
-
     if (_santaComponent.isFlamed) {
       flameTimer.update(dt);
       flameTimerText.text = 'Flame Time: $_flameRemainingTime';
     }
-
     _scoreText.text = 'Score: $score';
     _timerText.text = 'Time: $_remainingTime secs';
   }
 
-  /// Reset score and remaining time to default values.
   void reset() {
-    // Scores
     score = 0;
-
-    // Timers
     _remainingTime = Globals.gameTimeLimit;
     _flameRemainingTime = Globals.flameTimeLimit;
-
-    // Time Appearences
     _flameTimeAppearance = _getRandomInt(
       min: 10,
       max: _remainingTime,
@@ -234,14 +175,9 @@ class GiftGrabGame extends FlameGame with DragCallbacks, HasCollisionDetection {
       min: 10,
       max: _remainingTime,
     );
-
-    // Sprites
     _flameComponent.removeFromParent();
-
-    // Texts
     flameTimerText.removeFromParent();
   }
-  
 
   void addMenu({
     required Screens menu,
@@ -262,25 +198,25 @@ class GiftGrabGame extends FlameGame with DragCallbacks, HasCollisionDetection {
     Random rng = Random();
     return rng.nextInt(max - min) + min;
   }
- void setLevel(int level) {
-  switch (level) {
-    case 1:
-      addIceComponents(0);  // Pada level 1, tambahkan 2 IceComponent
-      break;
-    case 2:
-      addIceComponents(1);  // Pada level 2, tambahkan 3 IceComponent
-      break;
-    case 3:
-      addIceComponents(2);  // Pada level 3, tambahkan 4 IceComponent
-      break;
-    default:
-      // Set logika default atau level lainnya
-  }
-}
 
-void addIceComponents(int count) {
-  for (int i = 0; i < count; i++) {
-    add(IceComponent(startPosition: Vector2(200, 200)));
+  void setLevel(int level) {
+    switch (level) {
+      case 1:
+        addIceComponents(0);
+        break;
+      case 2:
+        addIceComponents(1);
+        break;
+      case 3:
+        addIceComponents(2);
+        break;
+      default:
+    }
   }
-}
+
+  void addIceComponents(int count) {
+    for (int i = 0; i < count; i++) {
+      add(IceComponent(startPosition: Vector2(200, 200)));
+    }
+  }
 }

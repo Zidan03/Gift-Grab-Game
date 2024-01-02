@@ -5,53 +5,43 @@ class AppThemes {
 
   static final Color _primaryColor = Colors.blue.shade900;
   static final Color _secondaryColor = Colors.orange.shade700;
-
-  /// Fonts
   static const String fontFamily = 'Montserrat';
-
-  /// Display Large
   static const TextStyle _displayLarge = TextStyle(
     fontWeight: FontWeight.w700,
     fontSize: 26,
     fontFamily: fontFamily,
   );
 
-  /// Display Medium
   static const TextStyle _displayMedium = TextStyle(
     fontWeight: FontWeight.w700,
     fontSize: 22,
     fontFamily: fontFamily,
   );
 
-  /// Display Small
   static const TextStyle _displaySmall = TextStyle(
     fontWeight: FontWeight.w700,
     fontSize: 20,
     fontFamily: fontFamily,
   );
 
-  /// Headline Medium
   static const TextStyle _headlineMedium = TextStyle(
     fontWeight: FontWeight.w700,
     fontSize: 16,
     fontFamily: fontFamily,
   );
 
-  /// Headline Small
   static const TextStyle _headlineSmall = TextStyle(
     fontWeight: FontWeight.w700,
     fontSize: 14,
     fontFamily: fontFamily,
   );
 
-  /// Title Large
   static const TextStyle _titleLarge = TextStyle(
     fontWeight: FontWeight.w700,
     fontSize: 12,
     fontFamily: fontFamily,
   );
 
-  /// Body Large
   static const TextStyle _bodyLarge = TextStyle(
     fontWeight: FontWeight.w500,
     fontSize: 14,
@@ -59,7 +49,6 @@ class AppThemes {
     fontFamily: fontFamily,
   );
 
-  /// Body Medium
   static const TextStyle _bodyMedium = TextStyle(
     fontWeight: FontWeight.w500,
     fontSize: 14,
@@ -67,21 +56,18 @@ class AppThemes {
     fontFamily: fontFamily,
   );
 
-  /// Title Medium
   static const TextStyle _titleMedium = TextStyle(
     fontWeight: FontWeight.w400,
     fontSize: 12,
     fontFamily: fontFamily,
   );
 
-  /// Title Small
   static const TextStyle _titleSmall = TextStyle(
     fontWeight: FontWeight.w400,
     fontSize: 12,
     fontFamily: fontFamily,
   );
 
-  /// Light theme
   static ThemeData lightTheme = ThemeData(
     primaryColor: _primaryColor,
     brightness: Brightness.light,
